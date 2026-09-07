@@ -1,173 +1,193 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PingWatch — Real-Time Service Status & Ping Checker</title>
-  <style>
-    :root {
-      --bg-color: #0f172a;
-      --card-bg: #1e293b;
-      --text-main: #f8fafc;
-      --text-sub: #94a3b8;
-      --accent: #38bdf8;
-      --success: #22c55e;
-      --danger: #ef4444;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Check real-time website status, server response latency, and community outage reports for free on PingWatch."
+    />
+    <meta
+      name="keywords"
+      content="status checker, ping test, is website down, outage radar, pingwatch"
+    />
+    <meta
+      name="google-site-verification"
+      content="rBHAxGUyvr5RhUFbV_GJL6hoJ_H4FrUlE_Xh0LufHQ4"
+    />
+    <title>PingWatch — Real-Time Service Status & Ping Checker</title>
+    <style>
+      :root {
+        --bg-color: #0f172a;
+        --card-bg: #1e293b;
+        --text-main: #f8fafc;
+        --text-sub: #94a3b8;
+        --accent: #38bdf8;
+        --success: #22c55e;
+        --danger: #ef4444;
+      }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      margin: 0;
-      padding: 2rem 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        margin: 0;
+        padding: 2rem 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+      }
 
-    .container {
-      max-width: 600px;
-      width: 100%;
-    }
+      .container {
+        max-width: 600px;
+        width: 100%;
+      }
 
-    header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
+      header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
 
-    header h1 {
-      font-size: 2.2rem;
-      margin: 0 0 0.5rem 0;
-      color: var(--accent);
-    }
+      header h1 {
+        font-size: 2.2rem;
+        margin: 0 0 0.5rem 0;
+        color: var(--accent);
+      }
 
-    header p {
-      color: var(--text-sub);
-      margin: 0;
-    }
+      header p {
+        color: var(--text-sub);
+        margin: 0;
+      }
 
-    .search-card {
-      background-color: var(--card-bg);
-      padding: 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-      margin-bottom: 1.5rem;
-    }
+      .search-card {
+        background-color: var(--card-bg);
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        margin-bottom: 1.5rem;
+      }
 
-    .input-group {
-      display: flex;
-      gap: 0.5rem;
-    }
+      .input-group {
+        display: flex;
+        gap: 0.5rem;
+      }
 
-    input[type="text"] {
-      flex: 1;
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      border: 1px solid #334155;
-      background-color: #0f172a;
-      color: var(--text-main);
-      font-size: 1rem;
-    }
+      input[type="text"] {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        border: 1px solid #334155;
+        background-color: #0f172a;
+        color: var(--text-main);
+        font-size: 1rem;
+      }
 
-    input[type="text"]:focus {
-      outline: 2px solid var(--accent);
-    }
+      input[type="text"]:focus {
+        outline: 2px solid var(--accent);
+      }
 
-    button {
-      padding: 0.75rem 1.25rem;
-      border-radius: 8px;
-      border: none;
-      background-color: var(--accent);
-      color: #0f172a;
-      font-weight: 600;
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
+      button {
+        padding: 0.75rem 1.25rem;
+        border-radius: 8px;
+        border: none;
+        background-color: var(--accent);
+        color: #0f172a;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
 
-    button:hover {
-      opacity: 0.9;
-    }
+      button:hover {
+        opacity: 0.9;
+      }
 
-    .results-card {
-      display: none;
-      background-color: var(--card-bg);
-      padding: 1.5rem;
-      border-radius: 12px;
-      text-align: center;
-    }
+      .results-card {
+        display: none;
+        background-color: var(--card-bg);
+        padding: 1.5rem;
+        border-radius: 12px;
+        text-align: center;
+      }
 
-    .status-badge {
-      display: inline-block;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      font-weight: bold;
-      margin: 1rem 0;
-    }
+      .status-badge {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: bold;
+        margin: 1rem 0;
+      }
 
-    .status-badge.online {
-      background-color: rgba(34, 197, 94, 0.2);
-      color: var(--success);
-    }
+      .status-badge.online {
+        background-color: rgba(34, 197, 94, 0.2);
+        color: var(--success);
+      }
 
-    .status-badge.offline {
-      background-color: rgba(239, 68, 68, 0.2);
-      color: var(--danger);
-    }
+      .status-badge.offline {
+        background-color: rgba(239, 68, 68, 0.2);
+        color: var(--danger);
+      }
 
-    .report-section {
-      margin-top: 1.5rem;
-      padding-top: 1rem;
-      border-top: 1px solid #334155;
-    }
+      .report-section {
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid #334155;
+      }
 
-    .btn-report {
-      background-color: transparent;
-      border: 1px solid var(--danger);
-      color: var(--danger);
-    }
+      .btn-report {
+        background-color: transparent;
+        border: 1px solid var(--danger);
+        color: var(--danger);
+      }
 
-    .btn-report:hover {
-      background-color: var(--danger);
-      color: var(--text-main);
-    }
+      .btn-report:hover {
+        background-color: var(--danger);
+        color: var(--text-main);
+      }
 
-    .report-count {
-      font-size: 0.875rem;
-      color: var(--text-sub);
-      margin-top: 0.5rem;
-    }
-  </style>
-</head>
-<body>
+      .report-count {
+        font-size: 0.875rem;
+        color: var(--text-sub);
+        margin-top: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>PingWatch</h1>
+        <p>Real-time website connectivity and community outage checker</p>
+      </header>
 
-  <div class="container">
-    <header>
-      <h1>PingWatch</h1>
-      <p>Real-time website connectivity and community outage checker</p>
-    </header>
+      <div class="search-card">
+        <div class="input-group">
+          <input
+            type="text"
+            id="domainInput"
+            placeholder="e.g. google.com or github.com"
+          />
+          <button id="checkBtn">Check Status</button>
+        </div>
+      </div>
 
-    <div class="search-card">
-      <div class="input-group">
-        <input type="text" id="domainInput" placeholder="e.g. google.com or github.com">
-        <button id="checkBtn">Check Status</button>
+      <div id="resultsCard" class="results-card">
+        <h2 id="targetDomain">example.com</h2>
+        <div id="statusBadge" class="status-badge online">Checking...</div>
+        <p id="responseTimeText" style="color: var(--text-sub)"></p>
+
+        <div class="report-section">
+          <p style="margin-bottom: 0.5rem; font-size: 0.9rem">
+            Experiencing an outage with this platform?
+          </p>
+          <button id="reportBtn" class="btn-report">Report Issue Today</button>
+          <div id="reportCount" class="report-count">
+            0 reports logged today
+          </div>
+        </div>
       </div>
     </div>
 
-    <div id="resultsCard" class="results-card">
-      <h2 id="targetDomain">example.com</h2>
-      <div id="statusBadge" class="status-badge online">Checking...</div>
-      <p id="responseTimeText" style="color: var(--text-sub);"></p>
-
-      <div class="report-section">
-        <p style="margin-bottom: 0.5rem; font-size: 0.9rem;">Experiencing an outage with this platform?</p>
-        <button id="reportBtn" class="btn-report">Report Issue Today</button>
-        <div id="reportCount" class="report-count">0 reports logged today</div>
-      </div>
-    </div>
-  </div>
-
-  <script src="app.js"></script>
-</body>
+    <script src="app.js"></script>
+  </body>
 </html>
